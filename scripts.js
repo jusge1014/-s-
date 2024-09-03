@@ -1,7 +1,5 @@
 
 document.addEventListener('DOMContentLoaded', function () {
-    localStorage.setItem('songs', JSON.stringify([])); // Clear all songs on load
-
     const songs = JSON.parse(localStorage.getItem('songs')) || [];
 
     function displaySongs(filter = '') {
@@ -9,8 +7,6 @@ document.addEventListener('DOMContentLoaded', function () {
         songSection.innerHTML = '';
 
         const genres = {};
-
-        songs.sort((a, b) => b.rating - a.rating); // Sort by rating in descending order
 
         songs.forEach((song, index) => {
             if (!genres[song.genre]) {
@@ -39,6 +35,7 @@ document.addEventListener('DOMContentLoaded', function () {
                     <p>평점: ${getRatingStars(song.rating)}</p>
                     <p>${song.review}</p>
                     ${song.youtubeLink ? `<p><a href="${song.youtubeLink}" target="_blank">유튜브 링크</a></p>` : ''}
+                    <button onclick="deleteSong(${song.index})">삭제</button>
                 `;
                 genreContent.appendChild(songDiv);
             });
@@ -70,6 +67,12 @@ document.addEventListener('DOMContentLoaded', function () {
         return stars;
     }
 
+    function deleteSong(index) {
+        songs.splice(index, 1);
+        localStorage.setItem('songs', JSON.stringify(songs));
+        displaySongs();
+    }
+
     if (document.getElementById('songForm')) {
         document.getElementById('songForm').addEventListener('submit', function (e) {
             e.preventDefault();
@@ -95,6 +98,5 @@ document.addEventListener('DOMContentLoaded', function () {
         });
     }
 
-    // Display songs when the page loads
     displaySongs();
 });
