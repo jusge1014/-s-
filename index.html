@@ -1,4 +1,3 @@
-
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -24,6 +23,29 @@
             <!-- 장르별 노래 목록이 여기 표시됩니다 -->
         </section>
     </main>
-    <script src="scripts.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const songs = JSON.parse(localStorage.getItem('songs')) || [];
+            
+            function displaySongs() {
+                const songSection = document.getElementById('songs');
+                songSection.innerHTML = '';
+                
+                songs.forEach(song => {
+                    const songDiv = document.createElement('div');
+                    songDiv.classList.add('song');
+                    songDiv.innerHTML = `
+                        <h4>${song.artist} - ${song.title}</h4>
+                        <p>평점: ${'★'.repeat(song.rating) + '☆'.repeat(5 - song.rating)}</p>
+                        <p>${song.review}</p>
+                        ${song.youtubeLink ? `<p><a href="${song.youtubeLink}" target="_blank">유튜브 링크</a></p>` : ''}
+                    `;
+                    songSection.appendChild(songDiv);
+                });
+            }
+
+            displaySongs();  // 페이지 로드 시 노래 목록을 표시
+        });
+    </script>
 </body>
 </html>
