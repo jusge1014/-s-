@@ -1,4 +1,4 @@
-
+<!-- add-song.html -->
 <!DOCTYPE html>
 <html lang="ko">
 <head>
@@ -20,6 +20,9 @@
     <main>
         <section>
             <form id="songForm">
+                <label for="password">비밀번호:</label>
+                <input type="password" id="password" name="password" required>
+                
                 <label for="title">노래 제목:</label>
                 <input type="text" id="title" name="title" required>
                 
@@ -42,6 +45,33 @@
             </form>
         </section>
     </main>
-    <script src="scripts.js"></script>
+    <script>
+        document.getElementById('songForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const password = document.getElementById('password').value;
+            const correctPassword = 'yourPassword123';  // 여기에 비밀번호를 설정하세요
+            
+            if (password !== correctPassword) {
+                alert('비밀번호가 올바르지 않습니다.');
+                return;
+            }
+
+            // 비밀번호가 올바르면 노래를 추가합니다.
+            const title = document.getElementById('title').value;
+            const artist = document.getElementById('artist').value;
+            const genre = document.getElementById('genre').value;
+            const rating = document.getElementById('rating').value;
+            const review = document.getElementById('review').value;
+            const youtubeLink = document.getElementById('youtubeLink').value;
+
+            const songs = JSON.parse(localStorage.getItem('songs')) || [];
+            const newSong = { title, artist, genre, rating, review, youtubeLink };
+            songs.push(newSong);
+            localStorage.setItem('songs', JSON.stringify(songs));
+
+            window.location.href = 'index.html';
+        });
+    </script>
 </body>
 </html>
